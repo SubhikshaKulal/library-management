@@ -9,6 +9,7 @@ import com.library.model.Book;
 import com.library.model.Category;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+	
 	List<Book> findByAuthor(String author);
 
 	List<Book> findByCategory(Category category);
