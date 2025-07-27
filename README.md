@@ -108,7 +108,7 @@ INSERT INTO library.users (username) VALUES ('Karthik');
 			}
 			
 2. UpdateBook
-	Method: POST
+	Method: PUT
 	END Point: http://localhost:8080/api/books/1
 	Request Body:
 			{
