@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ import com.library.repository.UserRepository;
 
 @Service
 public class RecommendationService {
-
+	private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
 	@Autowired
 	private UserRepository userRepository;
 
@@ -26,6 +28,7 @@ public class RecommendationService {
 	private BookRepository bookRepository;
 
 	public void markBookAsRead(Long userId, String isbn) {
+		logger.info("Entering RecommendationService.markBookAsRead");
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new LibraryServiceNoDataFoundException("User Not Found", "User Lookup Failed",
 						"User with ID " + userId + " was not found in the system."));
@@ -36,9 +39,12 @@ public class RecommendationService {
 
 		user.getReadBooks().add(book);
 		userRepository.save(user);
+		logger.info("Exiting RecommendationService.markBookAsRead");
 	}
 
 	public void addBookToReadingList(Long userId, String isbn) {
+		logger.info("Entering RecommendationService.addBookToReadingList");
+		
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new LibraryServiceNoDataFoundException("User Not Found", "User Lookup Failed",
 						"User with ID " + userId + " was not found in the system."));
@@ -49,9 +55,12 @@ public class RecommendationService {
 
 		user.getReadingList().add(book);
 		userRepository.save(user);
+		
+		logger.info("Exiting RecommendationService.addBookToReadingList");
 	}
 
 	public List<Book> getRecommendations(Long userId) {
+		logger.info("Entering RecommendationService.getRecommendations");
 		User user = getUserById(userId);
 		Set<Book> readBooks = user.getReadBooks();
 		Set<Book> readingList = user.getReadingList();
@@ -73,6 +82,7 @@ public class RecommendationService {
 	}
 
 	private User getUserById(Long id) {
+		logger.info("Entering RecommendationService.getUserById");
 		return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 	}
 
